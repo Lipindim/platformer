@@ -49,3 +49,6 @@ MonoBehaviour:
   - Track: 3
     Sprites:
     - {fileID: 21300000, guid: ac275666a28f0fa40876859dbb51e5e1, type: 3}
+  - Track: 4
+    Sprites:
+    - {fileID: 21300002, guid: ac275666a28f0fa40876859dbb51e5e1, type: 3}
