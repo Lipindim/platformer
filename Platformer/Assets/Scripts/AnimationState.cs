@@ -5,6 +5,7 @@
         None = 0,
         Idle = 1,
         Run = 2,
-        Jump = 3
+        JumpUp = 3,
+        JumpDown = 4
     }
 }
