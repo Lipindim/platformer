@@ -8,21 +8,30 @@ namespace Platformer
     {
         [SerializeField] private LevelObjectView _playerView;
         [SerializeField] private CannonView _cannonView;
+        [SerializeField] private List<LevelObjectView> _coins;
 
         private SpriteAnimationConfig _playerConfig;
+        private SpriteAnimationConfig _coinConfig;
         private List<IUpdatable> _updatables = new List<IUpdatable>();
+        private List<IUpdatable> _fixedUpdatables = new List<IUpdatable>();
 
         private void Awake()
         {
             _playerConfig = Resources.Load<SpriteAnimationConfig>("AnimationPlayerConfig");
+            _coinConfig = Resources.Load<SpriteAnimationConfig>("AnimationCoinConfig");
             var spriteAnimatorController = new SpriteAnimatorController(_playerConfig);
-            var playerMoveController = new PlayerMoveController(_playerView.transform, _playerView.SpriteRenderer, spriteAnimatorController);
+            var spriteAnimatorCoinController = new SpriteAnimatorController(_coinConfig);
+            var playerMoveController = new PlayerMoveController(_playerView, spriteAnimatorController);
             var cannonAimController = new CannonAimController(_cannonView.BarrelTransform, _playerView.transform);
-            var bulletsEmitterController = new BulletsEmitterController(_cannonView.Bullets, _cannonView.EmitterTransform);
+            var bulletsEmitterController = new BulletsEmitterController(_cannonView.Bullets, _cannonView.EmitterTransform, _playerView.Transform);
+            var coinController = new CoinsController(_coins, spriteAnimatorCoinController, _playerView);
+            var playerHealthController = new PlayerHealthController(_playerView);
+            var gameController = new GameController(playerHealthController);
             _updatables.Add(spriteAnimatorController);
-            _updatables.Add(playerMoveController);
+            _fixedUpdatables.Add(playerMoveController);
             _updatables.Add(cannonAimController);
             _updatables.Add(bulletsEmitterController);
+            _updatables.Add(spriteAnimatorCoinController);
         }
 
         private void Update()
@@ -35,7 +44,10 @@ namespace Platformer
 
         private void FixedUpdate()
         {
-
+            foreach (var updatable in _fixedUpdatables)
+            {
+                updatable.Update();
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Platformer
             return new Vector3(vector.x + deltaX, vector.y + deltaY, vector.z + deltaZ);
         }
 
-        public static Vector3 Change(this Vector3 vector, float? newX = null, float? newY = null, float? newZ = 0)
+        public static Vector3 Change(this Vector3 vector, float? newX = null, float? newY = null, float? newZ = null)
         {
             return new Vector3(newX ?? vector.x, newY ?? vector.y, newZ ?? vector.z);
         }

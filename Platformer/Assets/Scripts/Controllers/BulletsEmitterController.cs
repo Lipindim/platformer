@@ -6,19 +6,24 @@ namespace Platformer
 {
     public class BulletsEmitterController : IUpdatable
     {
-        private List<BulletController> _bullets = new List<BulletController>();
-        private Transform _emitterTransform;
+        private readonly List<BulletController> _bullets = new List<BulletController>();
+        private readonly Transform _emitterTransform;
+        private readonly Transform _playerTransform;
 
         private int _currentIndex;
         private float _timeTillNextBullet;
+        private float _squareAttackRange;
 
         private const float _delay = 2.0f;
-        private const float _startSpeed = 9.0f;
+        private const float _startSpeed = 10.0f;
+        private const float _attackRange = 10.0f;
 
 
-        public BulletsEmitterController(List<LevelObjectView> bulletViews, Transform emitterTransform)
+        public BulletsEmitterController(List<LevelObjectView> bulletViews, Transform emitterTransform, Transform playerTransform)
         {
             _emitterTransform = emitterTransform;
+            _playerTransform = playerTransform;
+            _squareAttackRange = _attackRange * _attackRange;
 
             foreach (LevelObjectView bulletView in bulletViews)
                 _bullets.Add(new BulletController(bulletView));
@@ -33,15 +38,19 @@ namespace Platformer
             }
             else
             {
-                _timeTillNextBullet = _delay;
-                _bullets[_currentIndex].Throw(_emitterTransform.position, -_emitterTransform.up * _startSpeed);
-                _currentIndex++;
+                Vector3 shootVector = _playerTransform.position - _emitterTransform.position;
+                if (shootVector.sqrMagnitude < _squareAttackRange)
+                {
+                    Vector3 shootDirection = shootVector.normalized;
+                    _timeTillNextBullet = _delay;
+                    _bullets[_currentIndex].Throw(_emitterTransform.position, shootDirection * _startSpeed);
+                    _currentIndex++;
 
-                if (_currentIndex >= _bullets.Count)
-                    _currentIndex = 0;
+                    if (_currentIndex >= _bullets.Count)
+                        _currentIndex = 0;
+                }
             }
 
-            _bullets.ForEach(x => x.Update());
         }
     }
 }
