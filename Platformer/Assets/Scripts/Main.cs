@@ -27,11 +27,13 @@ namespace Platformer
             var coinController = new CoinsController(_coins, spriteAnimatorCoinController, _playerView);
             var playerHealthController = new PlayerHealthController(_playerView);
             var gameController = new GameController(playerHealthController);
+            var cameraController = new CameraController(_playerView.Transform, Camera.main);
             _updatables.Add(spriteAnimatorController);
             _fixedUpdatables.Add(playerMoveController);
             _updatables.Add(cannonAimController);
             _updatables.Add(bulletsEmitterController);
             _updatables.Add(spriteAnimatorCoinController);
+            _updatables.Add(cameraController);
         }
 
         private void Update()

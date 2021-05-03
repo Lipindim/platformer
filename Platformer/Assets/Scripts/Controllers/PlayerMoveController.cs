@@ -12,9 +12,9 @@ namespace Platformer
         private readonly ContactsPoller _contactsPoller;
         private readonly Rigidbody2D _playerRigidbody2D;
 
-        private const float _moveSpeed = 5.0f;
+        private const float _moveSpeed = 7.0f;
         private const float _animationSpeed = 10.0f;
-        private const float _jumpForce = 8.0f;
+        private const float _jumpForce = 20.0f;
         
         private bool _doJump;
         private float _xMove;
