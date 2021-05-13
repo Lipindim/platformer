@@ -10,6 +10,7 @@ namespace Platformer
         [SerializeField] private CannonView _cannonView;
         [SerializeField] private List<LevelObjectView> _coins;
         [SerializeField] private GenerateLevelView _generateLevelView;
+        [SerializeField] private QuestStoryConfig[] _questStoryConfigs;
 
         private SpriteAnimationConfig _playerConfig;
         private SpriteAnimationConfig _coinConfig;
@@ -28,9 +29,10 @@ namespace Platformer
             var coinController = new CoinsController(_coins, spriteAnimatorCoinController, _playerView);
             var playerHealthController = new PlayerHealthController(_playerView);
             var gameController = new GameController(playerHealthController);
+            var questConfigurator = new QuestsConfigurator(_questStoryConfigs);
             var cameraController = new CameraController(_playerView.Transform, Camera.main);
-            var generateLevelController = new GeneratorLevelController(_generateLevelView);
-            generateLevelController.Awake();
+            //var generateLevelController = new GeneratorLevelController(_generateLevelView);
+            //generateLevelController.Awake();
             _updatables.Add(spriteAnimatorController);
             _fixedUpdatables.Add(playerMoveController);
             _updatables.Add(cannonAimController);
